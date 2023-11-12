@@ -1,1 +1,1 @@
-# Chat-Room-with-DES
+# Encrypted Chat Room using Python Socket and DES
