@@ -3,8 +3,8 @@ import socket
 import select 
 import sys 
 
-IP = str(sys.argv[1]) 
-Port = int(sys.argv[2]) 
+IP = '192.168.1.13'
+Port = 99
 
 if __name__ == "__main__":
 	server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
