@@ -4,6 +4,8 @@ from _thread import *
 
 clients = list()
 messageSize = 1024
+IP = '192.168.1.13'
+PORT = 99
 
 def remove(connection):
     connection.close()
@@ -23,8 +25,8 @@ def clientConnection(conn, addr):
         try:
             message = conn.receive(messageSize)
             if message:
-                print(f"Message: {message}")
                 print(f"Sender: {addr[0]}")
+                print(f"Message: {message}")
 
                 broadcast(f"{addr[0]},{message}", conn)
             
@@ -36,14 +38,6 @@ def clientConnection(conn, addr):
 if __name__ == '__main__':
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-    # sufficient argument is not provided
-    if(len(sys.argv) != 3):
-        print ("Jalankan dengan memberi IP dan PORT: python server.py IP PORT")
-        exit(1)
-    
-    IP = sys.argv[1]
-    PORT = int(sys.argv[2])
 
     server.bind((IP, PORT))
     server.listen(50)
