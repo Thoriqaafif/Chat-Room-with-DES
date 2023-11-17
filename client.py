@@ -18,10 +18,10 @@ if __name__ == "__main__":
 		for socks in read_sockets: 
 			if socks == server: 
 				message = socks.recv(2048) 
-				print (message) 
+				print (message.decode('utf-8')) 
 			else: 
 				message = sys.stdin.readline() 
-				server.send(message) 
+				server.send(message.encode('utf-8'))  
 				sys.stdout.write("<You>") 
 				sys.stdout.write(message) 
 				sys.stdout.flush() 
