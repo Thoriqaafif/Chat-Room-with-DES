@@ -290,7 +290,7 @@ def encrypt(plaintext, key):
         combine = left + right
 
         # Final permutation / inverse initial permutation
-        cipherText = cipherText + permute(combine,finalPerm)
+        cipherText = cipherText + binToText(permute(combine,finalPerm))
         
     return cipherText
 
