@@ -401,7 +401,9 @@ if __name__ == "__main__":
 			else: 
 				plaintext = input()
 				ciphertext = encrypt(plaintext, key)
-				server.send(f"{ciphertext.encode('utf-8')},{len(plaintext)}")  
+                    
+				message = f"{ciphertext},{len(plaintext)}"
+				server.send(message.encode('utf-8'))  
 				print(f"Sender: You")
 				print(f"message: { plaintext }")
 				print(f"Cipher Text: { ciphertext }")
