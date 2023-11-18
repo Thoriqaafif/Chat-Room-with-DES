@@ -257,7 +257,7 @@ def encrypt(plaintext, key):
     for i in range(ceil(len(pt)/64)):
         x = i*64
         curr_pt = pt[x:x+64]        # curr plaintext in bin
-        print(curr_pt)
+        print(curr_pt, len(curr_pt))
 
         # initial permutation
         curr_pt = permute(curr_pt, initialPermutation)
