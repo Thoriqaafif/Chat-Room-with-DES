@@ -395,6 +395,7 @@ if __name__ == "__main__":
 				print(f"Sender: {addr}")
 				print(f"Cipher Text: { ciphertext }")
 				print(f"message: { plaintext }")
+				sys.stdout.flush() 
 			else: 
 				plaintext = input()
 				ciphertext = encrypt(plaintext, key)

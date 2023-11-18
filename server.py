@@ -21,11 +21,9 @@ def broadcast(message, sender):
                 remove(client)
 
 def clientConnection(conn, addr):
-    print("Masuk")
     while True:
         try:
             message = conn.recv(messageSize)
-            print("message")
             if message:
                 print(f"Sender: {addr[0]}")
                 print(f"Message: {message.decode('utf8')}")
