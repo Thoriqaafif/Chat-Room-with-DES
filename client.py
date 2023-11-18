@@ -216,7 +216,6 @@ def encrypt(plaintext, key):
     pt_length = len(pt)
     zero_addition = 64-(pt_length%64)
     pt = pt + zero_addition*'0'
-    print(f"panjang pt: {len(pt)}")
     
     kb = hexToBin(key)
     cipherText = str()
@@ -258,7 +257,6 @@ def encrypt(plaintext, key):
     for i in range(ceil(pt_length/64)):
         x = i*64
         curr_pt = pt[x:x+64]        # curr plaintext in bin
-        print(i, curr_pt, len(curr_pt))
 
         # initial permutation
         curr_pt = permute(curr_pt, initialPermutation)
@@ -344,7 +342,6 @@ def decrypt(ciphertext, key, length):
     for i in range(ceil(len(ct)/64)):
         x = i*64
         curr_ct = ct[x:x+64]        # curr plaintext in bin
-        print(curr_ct)
 
         # initial permutation
         curr_ct = permute(curr_ct, initialPermutation)

@@ -25,9 +25,11 @@ def clientConnection(conn, addr):
         try:
             message = conn.recv(messageSize)
             message = message.decode('utf-8')
+            ciphertext, length = message.split(',')
             if message:
                 print(f"Sender: {addr[0]}")
-                print(f"Message: {message}\n")
+                print(f"Message: {ciphertext}\n")
+                print(f"Length: {length}\n")
 
                 broadcast(f"{addr[0]},{message}", conn)
             
