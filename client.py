@@ -254,10 +254,10 @@ def encrypt(plaintext, key):
         rkDec.append(binToDec(keyRound))
 
     # encrypt for each block (64 bit / 8 character)
-    for i in range(ceil(len(pt)/64)):
+    for i in range(ceil(pt_length/64)):
         x = i*64
         curr_pt = pt[x:x+64]        # curr plaintext in bin
-        print(curr_pt, len(curr_pt))
+        print(i, curr_pt, len(curr_pt))
 
         # initial permutation
         curr_pt = permute(curr_pt, initialPermutation)
