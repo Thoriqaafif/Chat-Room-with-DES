@@ -16,7 +16,7 @@ def broadcast(message, sender):
     for client in clients:
         if(client != sender):
             try:
-                client.send(message)
+                client.send(message.encode('utf-8'))
             except:
                 remove(client)
 
@@ -26,7 +26,7 @@ def clientConnection(conn, addr):
             message = conn.recv(messageSize)
             if message:
                 print(f"Sender: {addr[0]}")
-                print(f"Message: {message.decode('utf8')}")
+                print(f"Message: {message.decode('utf-8')}")
 
                 broadcast(f"{addr[0]},{message}", conn)
             

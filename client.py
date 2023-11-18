@@ -375,7 +375,7 @@ def decrypt(ciphertext, key):
         combine = left + right
 
         # Final permutation / inverse initial permutation
-        plaintext = plaintext + permute(combine,finalPerm)
+        plaintext = plaintext + binToText(permute(combine,finalPerm))
         
     return plaintext
         
@@ -392,7 +392,8 @@ if __name__ == "__main__":
 			if socks == server:
 				time.sleep(2)
 				message = socks.recv(2048)
-				addr, ciphertext = message.decode('utf-8').split(',')
+				message = message.decode('utf-8')
+				addr, ciphertext = message.split(',')
 				plaintext = decrypt(ciphertext, key)
 				print(f"Sender: {addr}")
 				print(f"Cipher Text: { ciphertext }")
