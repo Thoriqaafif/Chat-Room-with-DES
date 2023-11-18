@@ -390,7 +390,6 @@ if __name__ == "__main__":
 
 		for socks in read_sockets: 
 			if socks == server:
-				time.sleep(2)
 				message = socks.recv(2048)
 				message = message.decode('utf-8')
 				addr, ciphertext = message.split(',')

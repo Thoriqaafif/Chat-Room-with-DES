@@ -24,9 +24,10 @@ def clientConnection(conn, addr):
     while True:
         try:
             message = conn.recv(messageSize)
+            message = message.decode('utf-8')
             if message:
                 print(f"Sender: {addr[0]}")
-                print(f"Message: {message.decode('utf-8')}")
+                print(f"Message: {message}")
 
                 broadcast(f"{addr[0]},{message}", conn)
             
