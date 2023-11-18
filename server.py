@@ -24,7 +24,7 @@ def clientConnection(conn, addr):
     print("Masuk")
     while True:
         try:
-            message = conn.receive(messageSize)
+            message = conn.recv(messageSize)
             print("message")
             if message:
                 print(f"Sender: {addr[0]}")
