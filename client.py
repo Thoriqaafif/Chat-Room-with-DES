@@ -20,7 +20,7 @@ if __name__ == "__main__":
 				message = socks.recv(2048) 
 				print (message.decode('utf-8')) 
 			else: 
-				message = sys.stdin.readline() 
+				message = input()
 				server.send(message.encode('utf-8'))  
 				sys.stdout.write("<You>") 
 				sys.stdout.write(message) 
