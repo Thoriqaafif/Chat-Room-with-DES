@@ -3,6 +3,7 @@ import socket
 import select 
 import sys 
 from math import ceil
+import time
 
 IP = '192.168.1.13'
 Port = 99
@@ -389,6 +390,7 @@ if __name__ == "__main__":
 
 		for socks in read_sockets: 
 			if socks == server:
+				time.sleep(2)
 				message = socks.recv(2048)
 				addr, ciphertext = message.decode('utf-8').split(',')
 				plaintext = decrypt(ciphertext, key)
