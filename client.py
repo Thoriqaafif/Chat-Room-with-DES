@@ -212,7 +212,11 @@ def permute(init, permMatrix):
     return permutation
 
 def encrypt(plaintext, key):
-    pt  = textToBin(plaintext)
+    pt = textToBin(plaintext)
+    pt_length = len(pt)
+    zero_addition = 64-(64%pt_length)
+    pt = pt + zero_addition*'0'
+    
     kb = hexToBin(key)
     cipherText = str()
 
@@ -295,7 +299,7 @@ def encrypt(plaintext, key):
         
     return cipherText
 
-def decrypt(ciphertext, key):
+def decrypt(ciphertext, key, length):
     ct  = textToBin(ciphertext)
     kb = hexToBin(key)
     plaintext = str()
@@ -377,7 +381,7 @@ def decrypt(ciphertext, key):
         # Final permutation / inverse initial permutation
         plaintext = plaintext + binToText(permute(combine,finalPerm))
         
-    return plaintext
+    return plaintext[:length]
         
 if __name__ == "__main__":
 	server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -392,8 +396,9 @@ if __name__ == "__main__":
 			if socks == server:
 				message = socks.recv(2048)
 				message = message.decode('utf-8')
-				addr, ciphertext = message.split(',')
-				plaintext = decrypt(ciphertext, key)
+				addr, ciphertext, length = message.split(',')
+                    
+				plaintext = decrypt(ciphertext, key, length)
 				print(f"Sender: {addr}")
 				print(f"Cipher Text: { ciphertext }")
 				print(f"message: { plaintext }\n")
@@ -406,6 +411,6 @@ if __name__ == "__main__":
 				server.send(message.encode('utf-8'))  
 				print(f"Sender: You")
 				print(f"message: { plaintext }")
-				print(f"Cipher Text: { ciphertext }")
+				print(f"Cipher Text: { ciphertext }\n")
 				sys.stdout.flush() 
 	server.close()
