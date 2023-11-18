@@ -22,7 +22,6 @@ if __name__ == "__main__":
 			else: 
 				message = input()
 				server.send(message.encode('utf-8'))  
-				sys.stdout.write("<You>") 
-				sys.stdout.write(message) 
+				print(message.encode('utf-8')) 
 				sys.stdout.flush() 
 	server.close()
