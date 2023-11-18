@@ -397,6 +397,7 @@ if __name__ == "__main__":
 				message = socks.recv(2048)
 				message = message.decode('utf-8')
 				addr, ciphertext, length = message.split(',')
+				length = int(length)
                     
 				plaintext = decrypt(ciphertext, key, length)
 				print(f"Sender: {addr}")
