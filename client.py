@@ -216,6 +216,7 @@ def encrypt(plaintext, key):
     pt_length = len(pt)
     zero_addition = 64-(64%pt_length)
     pt = pt + zero_addition*'0'
+    print(f"panjang pt: {len(pt)}")
     
     kb = hexToBin(key)
     cipherText = str()
