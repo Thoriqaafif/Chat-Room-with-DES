@@ -257,6 +257,7 @@ def encrypt(plaintext, key):
     for i in range(ceil(len(pt)/64)):
         x = i*64
         curr_pt = pt[x:x+64]        # curr plaintext in bin
+        print(curr_pt)
 
         # initial permutation
         curr_pt = permute(curr_pt, initialPermutation)
@@ -342,6 +343,7 @@ def decrypt(ciphertext, key, length):
     for i in range(ceil(len(ct)/64)):
         x = i*64
         curr_ct = ct[x:x+64]        # curr plaintext in bin
+        print(curr_ct)
 
         # initial permutation
         curr_ct = permute(curr_ct, initialPermutation)
