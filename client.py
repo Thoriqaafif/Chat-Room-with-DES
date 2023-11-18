@@ -255,7 +255,8 @@ def encrypt(plaintext, key):
 
     # encrypt for each block (64 bit / 8 character)
     for i in range(ceil(len(pt)/64)):
-        curr_pt = pt[i*64:i*64+64]        # curr plaintext in bin
+        x = i*64
+        curr_pt = pt[x:x+64]        # curr plaintext in bin
 
         # initial permutation
         curr_pt = permute(curr_pt, initialPermutation)
@@ -339,7 +340,8 @@ def decrypt(ciphertext, key, length):
 
     # encrypt for each block (64 bit / 8 character)
     for i in range(ceil(len(ct)/64)):
-        curr_ct = ct[i*64:i*64+64]        # curr plaintext in bin
+        x = i*64
+        curr_ct = ct[x:x+64]        # curr plaintext in bin
 
         # initial permutation
         curr_ct = permute(curr_ct, initialPermutation)
