@@ -474,7 +474,15 @@ if __name__ == "__main__":
     # get all client's public key from server
     clientList = server.recv(2048).decode('utf-8')
     clients = eval(clientList)
-    print(clients)
+    print(f"Daftar client:")
+    # client belum ada
+    if(len(clients) == 0):
+        print("Belum ada client yang terkoneksi")
+    # client ada
+    else:
+        for i in range(len(clients)):
+            print(f"{i+1}. {clients[i]['addr']}")
+        print("Mau membuat koneksi ke siapa?\n")
 
     while True:
         sockets_list = [sys.stdin, server]
@@ -493,7 +501,7 @@ if __name__ == "__main__":
                     # new client's public key
                     if (data['type'] == "pubkey"):
                         clients.append(data['message'])
-                        print(f"Client {data['message']['addr']} telah terhubung\n")
+                        print(f"Client {data['message']['addr']} telah terhubung")
                         print(f"Daftar client:")
                         for i in range(len(clients)):
                             print(f"{i+1}. {clients[i]['addr']}")
@@ -511,12 +519,15 @@ if __name__ == "__main__":
 
                         # accept
                         if(answer == "ya"):
+                            connection = True
+                            print(f"terhubung, status = {connection}")
                             data={
                                 "type": "reply connection",
                                 "dest": data['source'],
                                 "message": "accept"
                             }
                             server.send(str(data).encode('utf-8'))
+                        # reject
                         else:
                             data={
                                 "type": "reply connection",
@@ -525,9 +536,19 @@ if __name__ == "__main__":
                             }
                             server.send(str(data).encode('utf-8'))
 
+                    # another client send reply connection
+                    elif (data['type'] == "reply connection"):
+                        # client accept
+                        if(data["message"] == "accept"):
+                            connection = True
+                            print(f"terhubung, status = {connection}")
+                        # client reject
+                        elif(data["message"] == "reject"):
+                            pass
+
                 # try to connect to other client
                 else:
-                    select = input()
+                    select =int(input())
 
                     # invalid input
                     while(select<1 or select>len(clients)):
