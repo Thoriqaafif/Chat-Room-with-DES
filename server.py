@@ -4,7 +4,7 @@ from _thread import *
 
 clients = list()
 messageSize = 1024
-IP = '192.168.1.13'
+IP = '192.226.1.2'
 PORT = 99
 
 def remove(connection):
@@ -21,6 +21,18 @@ def broadcast(message, sender):
                 remove(client)
 
 def clientConnection(conn, addr):
+    # get public key
+    data = conn.recv(messageSize)
+    pubKey = data.decode('utf-8')
+    
+    print(pubKey)
+    
+    clients.append({
+        'conn': conn,
+        'pubKey': pubKey,
+        'addr': addr[0]
+    })
+    
     while True:
         try:
             message = conn.recv(messageSize)
@@ -48,7 +60,6 @@ if __name__ == '__main__':
     # server accept connection request from each client
     while True:
         conn, addr = server.accept()
-        clients.append(conn)
 
         print(f"{addr[0]} is Connected")
 
