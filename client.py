@@ -495,7 +495,7 @@ if __name__ == "__main__":
                         clients.append(data['message'])
                         print(f"Daftar client:")
                         for i in range(len(clients)):
-                            print(f"{i+1}. {clients[i]['address']}")
+                            print(f"{i+1}. {clients[i]['addr']}")
 
                     # there is other client want to connect
                     elif (data['type'] == "new connection"):
