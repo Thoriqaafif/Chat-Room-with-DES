@@ -558,7 +558,7 @@ if __name__ == "__main__":
 
                     data = {
                         'type': 'new connection',
-                        'dest': clients[select-1]['address']
+                        'dest': clients[select-1]['addr']
                     }
                     server.send(str(data).encode('utf-8'))
 
