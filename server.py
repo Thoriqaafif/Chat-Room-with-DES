@@ -30,10 +30,25 @@ def clientConnection(conn, addr):
 
     clients.append({
         'conn': conn,
-        'pubKey': pubKey,
-        'addr': addr[0]
+        'data':{
+            'pubKey': pubKey,
+            'addr': addr[0]
+        }
     })
-    
+
+    # send new client's public key to other client
+    data = {
+        'type': 'pubkey',
+        'message': {
+            'addr': addr[0],
+            'pubKey': pubKey
+        }
+    }
+    broadcast(str(data), conn)
+
+    # send others public key to new client
+    conn.send(str(clients['data']).encode('utf-8'))
+
     while True:
         try:
             message = conn.recv(messageSize)
