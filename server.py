@@ -3,6 +3,7 @@ import sys
 from _thread import *
 
 clients = list()
+pubKeys = list()
 messageSize = 1024
 IP = '192.226.1.2'
 PORT = 99
@@ -14,11 +15,11 @@ def remove(connection):
 
 def broadcast(message, sender):
     for client in clients:
-        if(client['conn'] != sender):
+        if(client != sender):
             try:
-                client['conn'].send(message.encode('utf-8'))
+                client.send(message.encode('utf-8'))
             except:
-                remove(client['conn'])
+                remove(client)
 
 def clientConnection(conn, addr):
     # get public key
@@ -33,13 +34,10 @@ def clientConnection(conn, addr):
         'addr': addr[0]
     }
 
-    clients.append({
-        'conn': conn,
-        'data': data
-    })
+    pubKeys.append(data)
 
     # send others public key to new client
-    conn.send(str(data).encode('utf-8'))
+    conn.send(str(pubKeys).encode('utf-8'))
 
     # send new client's public key to other client
     data = {
@@ -78,6 +76,8 @@ if __name__ == '__main__':
     # server accept connection request from each client
     while True:
         conn, addr = server.accept()
+
+        clients.append(conn)
 
         print(f"{addr[0]} is Connected")
 
