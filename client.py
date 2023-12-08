@@ -548,17 +548,17 @@ if __name__ == "__main__":
 
                 # try to connect to other client
                 else:
-                    select =int(input())
+                    selectedClient =int(input())
 
                     # invalid input
-                    while(select<1 or select>len(clients)):
+                    while(selectedClient<1 or selectedClient>len(clients)):
                         print("Invalid Input")
                         print("Mau membuat koneksi ke siapa?")
-                        select = input("> ")
+                        selectedClient = input("> ")
 
                     data = {
                         'type': 'new connection',
-                        'dest': clients[select-1]['addr']
+                        'dest': clients[selectedClient-1]['addr']
                     }
                     server.send(str(data).encode('utf-8'))
 
