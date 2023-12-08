@@ -13,7 +13,7 @@ def remove(connection):
         clients.remove(connection)
 
 def broadcast(message, sender):
-    for client in clients:
+    for client in clients['conn']:
         if(client != sender):
             try:
                 client.send(message.encode('utf-8'))
