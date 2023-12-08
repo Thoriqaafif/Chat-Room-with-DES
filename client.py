@@ -472,7 +472,7 @@ if __name__ == "__main__":
     server.send(str(pubKey).encode('utf-8'))
 
     # get all client's public key from server
-    clients = server.recv(2048)
+    clients = server.recv(2048).decode('utf-8')
     print(clients)
 
     while True:
