@@ -472,8 +472,8 @@ if __name__ == "__main__":
     server.send(str(pubKey).encode('utf-8'))
 
     # get all client's public key from server
-    clients = server.recv(2048).decode('utf-8')
-    print(clients)
+    clientList = server.recv(2048).decode('utf-8')
+    clients = eval(clientList)
 
     while True:
         sockets_list = [sys.stdin, server]
