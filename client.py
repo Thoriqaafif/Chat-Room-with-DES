@@ -469,7 +469,7 @@ if __name__ == "__main__":
     server.connect((IP, Port))
 
     # send public key
-    server.send(pubKey.encode('utf-8'))
+    server.send(str(pubKey).encode('utf-8'))
 
     # get all client's public key from server
     clients = server.recv(2048)

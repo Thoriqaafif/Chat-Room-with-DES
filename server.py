@@ -23,10 +23,11 @@ def broadcast(message, sender):
 def clientConnection(conn, addr):
     # get public key
     data = conn.recv(messageSize)
-    pubKey = data.decode('utf-8')
+    data = data.decode('utf-8')
+    pubKey = eval(data)
     
     print(pubKey)
-    
+
     clients.append({
         'conn': conn,
         'pubKey': pubKey,
