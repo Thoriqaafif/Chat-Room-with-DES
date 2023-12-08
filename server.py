@@ -13,12 +13,12 @@ def remove(connection):
         clients.remove(connection)
 
 def broadcast(message, sender):
-    for client in clients['conn']:
-        if(client != sender):
+    for client in clients:
+        if(client['conn'] != sender):
             try:
-                client.send(message.encode('utf-8'))
+                client['conn'].send(message.encode('utf-8'))
             except:
-                remove(client)
+                remove(client['conn'])
 
 def clientConnection(conn, addr):
     # get public key
