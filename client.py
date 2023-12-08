@@ -493,9 +493,11 @@ if __name__ == "__main__":
                     # new client's public key
                     if (data['type'] == "pubkey"):
                         clients.append(data['message'])
+                        print(f"Client {data['message']['addr']} telah terhubung\n")
                         print(f"Daftar client:")
                         for i in range(len(clients)):
                             print(f"{i+1}. {clients[i]['addr']}")
+                        print("Mau membuat koneksi ke siapa?\n")
 
                     # there is other client want to connect
                     elif (data['type'] == "new connection"):
@@ -503,7 +505,7 @@ if __name__ == "__main__":
                         answer = input(prompt)
 
                         # invalid input
-                        while(answer != "ya" & answer != "tidak"):
+                        while(answer != "ya" and answer != "tidak"):
                             print("Invalid input, masukkan \"ya\" atau \"tidak\"")
                             answer = input(prompt)
 
@@ -525,11 +527,10 @@ if __name__ == "__main__":
 
                 # try to connect to other client
                 else:
-                    print("Mau membuat koneksi ke siapa?")
-                    select = input("> ")
+                    select = input()
 
                     # invalid input
-                    while(select<1 | select>len(clients)):
+                    while(select<1 or select>len(clients)):
                         print("Invalid Input")
                         print("Mau membuat koneksi ke siapa?")
                         select = input("> ")
