@@ -15,11 +15,11 @@ def remove(connection):
 
 def broadcast(message, sender):
     for client in clients:
-        if(client != sender):
+        if(client['conn'] != sender):
             try:
-                client.send(message.encode('utf-8'))
+                client['conn'].send(message.encode('utf-8'))
             except:
-                remove(client)
+                remove(client['conn'])
 
 def clientConnection(conn, addr):
     # get public key
@@ -77,7 +77,10 @@ if __name__ == '__main__':
     while True:
         conn, addr = server.accept()
 
-        clients.append(conn)
+        clients.append({
+            'conn': conn,
+            'addr': addr[0],
+        })
 
         print(f"{addr[0]} is Connected")
 
