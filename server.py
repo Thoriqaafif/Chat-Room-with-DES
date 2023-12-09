@@ -70,6 +70,7 @@ def clientConnection(conn, addr):
             
             else:
                 remove(conn)
+                removePubKeys(addr[0])
         except:
             continue
 
