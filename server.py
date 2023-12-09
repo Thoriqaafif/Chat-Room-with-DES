@@ -16,6 +16,7 @@ def remove(connection):
 def removePubKeys(ip):
     for pubKey in pubKeys:
         if(pubKey['addr'] == ip):
+            print('test')
             pubKeys.remove(pubKey)
 
 def broadcast(message, sender):
