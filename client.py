@@ -10,7 +10,7 @@ IP = '192.226.1.2'
 Port = 99
 key = "AABB09182736CCDD"
 username = str()
-hostname = socket.gethostbyname()
+hostname = socket.gethostname()
 clientIp = socket.gethostbyname(hostname)
 
 # list of other client's and its public keys
