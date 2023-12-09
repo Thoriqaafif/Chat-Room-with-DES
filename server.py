@@ -13,6 +13,11 @@ def remove(connection):
     if(connection in clients):
         clients.remove(connection)
 
+def removePubKeys(ip):
+    for pubKey in pubKeys:
+        if(pubKey['addr'] == ip):
+            pubKeys.remove(pubKey)
+
 def broadcast(message, sender):
     for client in clients:
         if(client['conn'] != sender):
@@ -20,6 +25,7 @@ def broadcast(message, sender):
                 client['conn'].send(message.encode('utf-8'))
             except:
                 remove(client['conn'])
+                removePubKeys(client['addr'])
 
 def clientConnection(conn, addr):
     # get public key
