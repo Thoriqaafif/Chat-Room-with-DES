@@ -43,7 +43,8 @@ def clientConnection(conn, addr):
         'type': 'pubkey',
         'message': {
             'addr': addr[0],
-            'pubKey': pubKey
+            'pubKey': pubKey,
+            'connected': False
         }
     }
     broadcast(str(data), conn)
