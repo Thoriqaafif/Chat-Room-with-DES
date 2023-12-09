@@ -10,12 +10,15 @@ IP = '192.226.1.2'
 Port = 99
 key = "AABB09182736CCDD"
 username = str()
+hostname = socket.gethostbyname()
+clientIp = socket.gethostbyname(hostname)
 
 # list of other client's and its public keys
 clients = []
 
 # connection status, true if client is in a chat session
 connected = False
+currConnected = str()
 
 # variable for rsa
 p = 7
@@ -244,9 +247,15 @@ def binToHex(bin):
 
     return hex
 
+# generate session key (for DES)
+def generateSessionKey():
+    min = 0
+    max = (1<<64)-1
+    dec = random.randint(min, max)
+
+    return binToHex(decToBin(dec))
+
 # shift digit left
-
-
 def shiftLeft(num, shift, bits):
     result = num << shift
     offset = (result | ((1 << bits)-1)) >> bits
@@ -254,8 +263,6 @@ def shiftLeft(num, shift, bits):
     return result
 
 # do permutation based on given matrix/box
-
-
 def permute(init, permMatrix):
     permutation = str()
     for i in range(len(permMatrix)):
@@ -263,8 +270,6 @@ def permute(init, permMatrix):
     return permutation
 
 # rsa encryption
-
-
 def rsa_encrypt(message, key):
     pt = textToBin(message)
     ct = ""
@@ -278,14 +283,10 @@ def rsa_encrypt(message, key):
         currPt = pt[x:x+blockLength]
 
 # rsa decryption
-
-
 def rsa_decrypt(message, key):
     pass
 
 # des encryption
-
-
 def encrypt(plaintext, key):
     pt = textToBin(plaintext)
     pt_length = len(pt)
@@ -480,8 +481,11 @@ if __name__ == "__main__":
         print("Belum ada client yang terkoneksi")
     # client ada
     else:
+        count = 1
         for i in range(len(clients)):
-            print(f"{i+1}. {clients[i]['addr']}")
+            if(not clients[i]['connected']):
+                print(f"{count}. {clients[i]['addr']}")
+                count+=1
         print("Mau membuat koneksi ke siapa?\n")
 
     while True:
@@ -503,9 +507,17 @@ if __name__ == "__main__":
                         clients.append(data['message'])
                         print(f"Client {data['message']['addr']} telah terhubung")
                         print(f"Daftar client:")
-                        for i in range(len(clients)):
-                            print(f"{i+1}. {clients[i]['addr']}")
-                        print("Mau membuat koneksi ke siapa?\n")
+                        # client belum ada
+                        if(len(clients) == 0):
+                            print("Belum ada client yang terkoneksi")
+                        # client ada
+                        else:
+                            count = 1
+                            for i in range(len(clients)):
+                                if(not clients[i]['connected']):
+                                    print(f"{count}. {clients[i]['addr']}")
+                                    count+=1
+                            print("Mau membuat koneksi ke siapa?\n")
 
                     # there is other client want to connect
                     elif (data['type'] == "new connection"):
@@ -520,10 +532,12 @@ if __name__ == "__main__":
                         # accept
                         if(answer == "ya"):
                             connection = True
-                            print(f"terhubung, status = {connection}")
+                            currConnected = data['src']
+                            print(f"Berhasil membuat koneksi dengan {currConnected}")
                             data={
                                 "type": "reply connection",
-                                "dest": data['source'],
+                                "dest": currConnected,
+                                "src": clientIp,
                                 "message": "accept"
                             }
                             server.send(str(data).encode('utf-8'))
@@ -531,7 +545,8 @@ if __name__ == "__main__":
                         else:
                             data={
                                 "type": "reply connection",
-                                "dest": data['source'],
+                                "dest": data['src'],
+                                "src": clientIp,
                                 "message": "reject"
                             }
                             server.send(str(data).encode('utf-8'))
@@ -541,7 +556,8 @@ if __name__ == "__main__":
                         # client accept
                         if(data["message"] == "accept"):
                             connection = True
-                            print(f"terhubung, status = {connection}")
+                            currConnected = data['src']
+                            print(f"Berhasil membuat koneksi dengan {currConnected}")
                         # client reject
                         elif(data["message"] == "reject"):
                             pass
@@ -558,6 +574,7 @@ if __name__ == "__main__":
 
                     data = {
                         'type': 'new connection',
+                        "src": clientIp,
                         'dest': clients[selectedClient-1]['addr']
                     }
                     server.send(str(data).encode('utf-8'))

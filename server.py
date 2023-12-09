@@ -26,18 +26,17 @@ def clientConnection(conn, addr):
     data = conn.recv(messageSize)
     data = data.decode('utf-8')
     pubKey = eval(data)
-    
-    print(pubKey)
-
-    data = {
-        'pubKey': pubKey,
-        'addr': addr[0]
-    }
-
-    pubKeys.append(data)
 
     # send others public key to new client
     conn.send(str(pubKeys).encode('utf-8'))
+
+    data = {
+        'pubKey': pubKey,
+        'addr': addr[0],
+        'connected': False
+    }
+
+    pubKeys.append(data)
 
     # send new client's public key to other client
     data = {
