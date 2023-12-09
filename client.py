@@ -481,11 +481,8 @@ if __name__ == "__main__":
         print("Belum ada client yang terkoneksi")
     # client ada
     else:
-        count = 1
         for i in range(len(clients)):
-            if(not clients[i]['connected']):
-                print(f"{count}. {clients[i]['addr']}")
-                count+=1
+            print(f"{i+1}. {clients[i]['addr']}")
         print("Mau membuat koneksi ke siapa?\n")
 
     while True:
@@ -512,22 +509,19 @@ if __name__ == "__main__":
                             print("Belum ada client yang terkoneksi")
                         # client ada
                         else:
-                            count = 1
                             for i in range(len(clients)):
-                                if(not clients[i]['connected']):
-                                    print(f"{count}. {clients[i]['addr']}")
-                                    count+=1
+                                print(f"{i+1}. {clients[i]['addr']}")
                             print("Mau membuat koneksi ke siapa?\n")
 
                     # there is other client want to connect
                     elif (data['type'] == "new connection"):
-                        prompt = data['source'] + "mau buat koneksi nih... terima? (ya/tidak)"
-                        answer = input(prompt)
+                        print(data['source'] + "mau buat koneksi nih... terima? (ya/tidak)")
+                        answer = input()
 
                         # invalid input
                         while(answer != "ya" and answer != "tidak"):
                             print("Invalid input, masukkan \"ya\" atau \"tidak\"")
-                            answer = input(prompt)
+                            answer = input()
 
                         # accept
                         if(answer == "ya"):
