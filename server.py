@@ -81,7 +81,7 @@ def clientConnection(conn, addr):
 
                 if message:
                     # message destination
-                    if (message['dest']):
+                    if (message['type'] != 'new session'):
                         dest = message['dest']
 
                         print(message)

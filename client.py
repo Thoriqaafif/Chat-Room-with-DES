@@ -559,6 +559,7 @@ if __name__ == "__main__":
                             connected = True
                             currConnected = data['src']
                             connectionMessage = {
+                                'type': 'new session',
                                 'addr': currConnected
                             }
                             server.send(str(connectionMessage).encode('utf-8'))
@@ -612,6 +613,7 @@ if __name__ == "__main__":
                             connected = True
                             currConnected = data['src']
                             connectionMessage = {
+                                'type': 'new session',
                                 'addr': currConnected
                             }
                             server.send(str(connectionMessage).encode('utf-8'))
