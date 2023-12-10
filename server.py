@@ -89,7 +89,7 @@ def clientConnection(conn, addr):
                     # message indicate client have been created a chat session
                     else:
                         connected = True
-                        currConnected = message
+                        currConnected = message['addr']
                 
                 else:
                     remove(conn)

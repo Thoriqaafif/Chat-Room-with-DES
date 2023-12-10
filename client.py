@@ -558,7 +558,10 @@ if __name__ == "__main__":
                             # Koneksi berhasil
                             connected = True
                             currConnected = data['src']
-                            server.send(str(currConnected).encode('utf-8'))
+                            connectionMessage = {
+                                'addr': currConnected
+                            }
+                            server.send(str(connectionMessage).encode('utf-8'))
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                             print("Sesi chat telah dimulai\n")
                         # reject
@@ -608,7 +611,10 @@ if __name__ == "__main__":
                             # koneksi berhasil
                             connected = True
                             currConnected = data['src']
-                            server.send(str(currConnected).encode('utf-8'))
+                            connectionMessage = {
+                                'addr': currConnected
+                            }
+                            server.send(str(connectionMessage).encode('utf-8'))
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                             print("Sesi chat telah dimulai\n")
                         # client reject
