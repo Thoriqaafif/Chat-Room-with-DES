@@ -557,7 +557,7 @@ if __name__ == "__main__":
 
                             # Koneksi berhasil
                             connected = True
-                            currConnected = clientIp
+                            currConnected = data['src']
                             server.send(currConnected.encode('utf-8'))
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                             print("Sesi chat telah dimulai\n")

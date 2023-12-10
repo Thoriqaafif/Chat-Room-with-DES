@@ -78,6 +78,7 @@ def clientConnection(conn, addr):
                 message = conn.recv(messageSize)
                 message = message.decode('utf-8')
                 message = eval(message)
+                print(message)
 
                 if message:
                     # message destination
@@ -85,10 +86,8 @@ def clientConnection(conn, addr):
                         dest = message['dest']
 
                         send(str(message), dest)
-                        print(message)
                     # message indicate client have been created a chat session
                     else:
-                        print(message)
                         connected = True
                         currConnected = message
                 
