@@ -519,13 +519,13 @@ if __name__ == "__main__":
                         if(answer == "ya"):
                             connection = True
                             currConnected = data['src']
-                            data={
+                            reply={
                                 "type": "reply connection",
                                 "dest": currConnected,
                                 "src": clientIp,
                                 "message": "accept"
                             }
-                            server.send(str(data).encode('utf-8'))
+                            server.send(str(reply).encode('utf-8'))
                             
                             # menerima N1 dan IdA
                             N1 = server.recv(messageSize).decode('utf-8')
