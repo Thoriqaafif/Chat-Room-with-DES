@@ -587,16 +587,21 @@ if __name__ == "__main__":
                             msg = eval(msg)
                             N1, IdA = msg['message'].split(',')
                             N1 = rsa_decrypt(N1, prKey)
-                            print(f"N1 yang diterima: {N1}")
+                            print(f"N1 yang diterima: {N1}\n")
                             IdA = rsa_decrypt(IdA, prKey)
-                            print(f"Id yang diterima: {IdA}")
+                            print(f"Id yang diterima: {IdA}\n")
 
                             # kirim N1 dan N2
                             N2 = random.randint(0, maxNum)
                             N2 = str(N2)
-                            print(f"Mengirim  N2: {N2}")
+                            print(f"Mengirim  N1: {N1}")
                             N1 = rsa_encrypt(N1, tempPubKey)
+                            print('-'*40)
+
+                            print(f"Mengirim  N2: {N2}")
                             N2 = rsa_encrypt(N2, tempPubKey)
+                            print('-'*40)
+
                             msg = f"{N1},{N2}"
                             n1n2 = {
                                 'dest': data['src'],
@@ -611,11 +616,13 @@ if __name__ == "__main__":
                             N2 = N2['message']
                             N2 = rsa_decrypt(N2, prKey)
                             print(f"N2 yang diterima: {N2}")
+                            print('-'*40)
 
                             # kirim session key
                             key = generateSessionKey()
                             print(f"Mengirim  key: {key}")
                             key = rsa_encrypt(key, tempPubKey)
+                            print('-'*40)
                             keyData = {
                                 'dest': data['src'],
                                 'src': clientIp,
@@ -654,10 +661,15 @@ if __name__ == "__main__":
                             # kirim N1 dan Id A
                             N1 = random.randint(0, maxNum)
                             N1 = str(N1)
+
                             print(f"Mengirim  N1: {N1}")
                             N1 = rsa_encrypt(N1, tempPubKey)
+                            print('-'*40)
+
                             print(f"Mengirim  Id: {clientIp}")
                             IdA = rsa_encrypt(clientIp, tempPubKey)
+                            print('-'*40)
+
                             msg = f"{N1},{IdA}"
                             n1Id = {
                                 'dest': data['src'],
@@ -672,12 +684,17 @@ if __name__ == "__main__":
                             N1, N2 = msg['message'].split(',')
                             N1 = rsa_decrypt(N1, prKey)
                             print(f"N1 yang diterima: {N1}")
+                            print('-'*40)
+
                             N2 = rsa_decrypt(N2, prKey)
                             print(f"N2 yang diterima: {N2}")
+                            print('-'*40)
 
                             # kirim N2
                             print(f"Mengirim  N2: {N2}")
                             N2 = rsa_encrypt(N2, tempPubKey)
+                            print('-'*40)
+
                             n2 = {
                                 'dest': data['src'],
                                 'src': clientIp,
@@ -691,6 +708,7 @@ if __name__ == "__main__":
                             key = key['message']
                             key = rsa_decrypt(key, prKey)
                             print(f"Key yang diterima: {key}")
+                            print('-'*40)
 
                             # koneksi berhasil
                             connected = True
