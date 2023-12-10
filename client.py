@@ -517,11 +517,9 @@ if __name__ == "__main__":
 
                         # accept
                         if(answer == "ya"):
-                            connection = True
-                            currConnected = data['src']
                             reply={
                                 "type": "reply connection",
-                                "dest": currConnected,
+                                "dest": data['src'],
                                 "src": clientIp,
                                 "message": "accept"
                             }
@@ -555,8 +553,11 @@ if __name__ == "__main__":
                                 'src': clientIp,
                                 'message': key
                             }
+                            server.send(str(keyData).encode('utf-8'))
 
                             # Koneksi berhasil
+                            connection = True
+                            currConnected = clientIp
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                         # reject
                         else:
@@ -572,9 +573,6 @@ if __name__ == "__main__":
                     elif (data['type'] == "reply connection"):
                         # client accept
                         if(data["message"] == "accept"):
-                            connection = True
-                            currConnected = data['src']
-
                             # kirim N1 dan Id A
                             N1 = random.randint(0, maxNum)
                             print(f"Mengirim  N1: {N1}")
@@ -591,20 +589,23 @@ if __name__ == "__main__":
                             print(f"N2 yang diterima: {N2['message']}")
 
                             # kirim N2
-                            print(f"Mengirim  N2: {N2}")
+                            print(f"Mengirim  N2: {N2['message']}")
                             n2 = {
                                 'dest': data['src'],
                                 'src': clientIp,
-                                'message': N2
+                                'message': N2['message']
                             }
                             server.send(str(n2).encode('utf-8'))
 
                             # menerima N1 dan session Key
                             key = server.recv(messageSize).decode('utf-8')
                             key = eval(key)
-                            print(f"Key yang diterima: {key['message']}")
+                            key = key['message']
+                            print(f"Key yang diterima: {key}")
 
                             # koneksi berhasil
+                            connection = True
+                            currConnected = data['src']
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                         # client reject
                         elif(data["message"] == "reject"):
