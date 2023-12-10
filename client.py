@@ -10,8 +10,8 @@ IP = '192.226.1.2'
 Port = 99
 key = "AABB09182736CCDD"
 username = str()
-hostname = socket.gethostname()
-clientIp = socket.gethostbyname(hostname)
+clientIp = str()
+messageSize = 2048
 
 # list of other client's and its public keys
 clients = []
@@ -468,6 +468,9 @@ def decrypt(ciphertext, key, length):
 if __name__ == "__main__":
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.connect((IP, Port))
+
+    # get IP that connect to server
+    clientIp = server.recv(messageSize).decode('utf-8')
 
     # send public key
     server.send(str(pubKey).encode('utf-8'))

@@ -41,6 +41,9 @@ def clientConnection(conn, addr):
     connected = False
     connectedClient = str()
 
+    # send client IP that connect to server
+    conn.send(str(addr[0]).encode('utf-8'))
+
     # get public key
     data = conn.recv(messageSize)
     data = data.decode('utf-8')
