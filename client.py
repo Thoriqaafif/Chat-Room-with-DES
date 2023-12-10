@@ -507,7 +507,7 @@ if __name__ == "__main__":
 
                     # there is other client want to connect
                     elif (data['type'] == "new connection"):
-                        print(data['src'] + "mau buat koneksi nih... terima? (ya/tidak)")
+                        print(data['src'] + " mau buat koneksi nih... terima? (ya/tidak)")
                         answer = input()
 
                         # invalid input
@@ -528,7 +528,7 @@ if __name__ == "__main__":
                             server.send(str(data).encode('utf-8'))
                             
                             # menerima N1 dan IdA
-                            N1 = server.recv(messageSize)
+                            N1 = server.recv(messageSize).decode('utf-8')
                             N1 = eval(N1)
                             print(f"N1 yang diterima: {N1['message']}")
 
@@ -543,7 +543,7 @@ if __name__ == "__main__":
                             server.send(str(n1n2).encode('utf-8'))
 
                             # menerima N2
-                            N2 = server.recv(messageSize)
+                            N2 = server.recv(messageSize).decode('utf-8')
                             N2 = eval(N2)
                             print(f"N2 yang diterima: {N2['message']}")
 
@@ -586,7 +586,7 @@ if __name__ == "__main__":
                             server.send(str(n1Id).encode('utf-8'))
 
                             # menerima N1, N2
-                            N2 = server.recv(messageSize)
+                            N2 = server.recv(messageSize).decode('utf-8')
                             N2 = eval(N2)
                             print(f"N2 yang diterima: {N2['message']}")
 
@@ -600,7 +600,7 @@ if __name__ == "__main__":
                             server.send(str(n2).encode('utf-8'))
 
                             # menerima N1 dan session Key
-                            key = server.recv(messageSize)
+                            key = server.recv(messageSize).decode('utf-8')
                             key = eval(key)
                             print(f"Key yang diterima: {key['message']}")
 
