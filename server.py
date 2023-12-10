@@ -88,13 +88,13 @@ def clientConnection(conn, addr):
             else:
                 message = conn.recv(messageSize)
                 message = message.decode('utf-8')
-                ciphertext, length = message.split(',')
+                ciphertext, length, dest = message.split(',')
                 if message:
                     print(f"Sender: {addr[0]}")
                     print(f"Message: {ciphertext}")
                     print(f"Length: {length}\n")
 
-                    broadcast(f"{addr[0]},{message}", conn)
+                    send(f"{addr[0]},{ciphertext},{length}", dest)
                 
                 else:
                     remove(conn)
