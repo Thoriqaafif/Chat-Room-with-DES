@@ -291,10 +291,10 @@ def rsa_encrypt(message, pubKey):
 
     print("Before encryption:")
     print(f"In decimal: {ptList}")
-    print(f"In ascii: {pt}")
+    # print(f"In ascii: {pt}")
     print("After encryption:")
     print(f"In decimal: {ctList}")
-    print(f"In ascii: {ct}")
+    # print(f"In ascii: {ct}")
 
     return ct
 
@@ -317,10 +317,10 @@ def rsa_decrypt(message, prKey):
     
     print("Before decryption:")
     print(f"In decimal: {ctList}")
-    print(f"In ascii: {ct}")
+    # print(f"In ascii: {ct}")
     print("After decryption:")
     print(f"In decimal: {ptList}")
-    print(f"In ascii: {pt}")
+    # print(f"In ascii: {pt}")
 
     return pt
 
