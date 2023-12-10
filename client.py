@@ -580,6 +580,7 @@ if __name__ == "__main__":
                             server.send(str(reply).encode('utf-8'))
                             
                             tempPubKey = searchPubkeys(data['src'])
+                            tempPubKey = tempPubKey[0]
 
                             # menerima N1 dan IdA
                             msg = server.recv(messageSize).decode('utf-8')
@@ -648,6 +649,7 @@ if __name__ == "__main__":
                         if(data["message"] == "accept"):
                             # mencari public key client
                             tempPubKey = searchPubkeys(data['src'])
+                            tempPubKey = tempPubKey[0]
 
                             # kirim N1 dan Id A
                             N1 = random.randint(0, maxNum)
