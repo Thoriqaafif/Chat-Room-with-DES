@@ -621,12 +621,12 @@ if __name__ == "__main__":
                             # kirim session key
                             key = generateSessionKey()
                             print(f"Mengirim  key: {key}")
-                            key = rsa_encrypt(key, tempPubKey)
+                            encKey = rsa_encrypt(key, tempPubKey)
                             print('-'*40)
                             keyData = {
                                 'dest': data['src'],
                                 'src': clientIp,
-                                'message': key
+                                'message': encKey
                             }
                             server.send(str(keyData).encode('utf-8'))
 
