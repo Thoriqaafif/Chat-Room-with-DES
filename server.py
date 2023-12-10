@@ -39,7 +39,7 @@ def send(message, destAddr):
 
 def clientConnection(conn, addr):
     connected = False
-    connectedClient = str()
+    currConnected = str()
 
     # send client IP that connect to server
     conn.send(str(addr[0]).encode('utf-8'))
@@ -79,22 +79,32 @@ def clientConnection(conn, addr):
                 message = message.decode('utf-8')
                 message = eval(message)
 
-                # message destination
-                dest = message['dest']
+                if message:
+                    # message destination
+                    if (message['dest']):
+                        dest = message['dest']
 
-                send(str(message), dest)
-                print(message)
+                        send(str(message), dest)
+                        print(message)
+                    # message indicate client have been created a chat session
+                    else:
+                        connected = True
+                        currConnected = message
+                
+                else:
+                    remove(conn)
+                    removePubKeys(addr[0])
             # if connected
             else:
                 message = conn.recv(messageSize)
                 message = message.decode('utf-8')
-                ciphertext, length, dest = message.split(',')
+                ciphertext, length = message.split(',')
                 if message:
                     print(f"Sender: {addr[0]}")
                     print(f"Message: {ciphertext}")
                     print(f"Length: {length}\n")
 
-                    send(f"{addr[0]},{ciphertext},{length}", dest)
+                    send(f"{addr[0]},{message}", currConnected)
                 
                 else:
                     remove(conn)
