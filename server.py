@@ -4,7 +4,7 @@ from _thread import *
 
 clients = list()
 pubKeys = list()
-messageSize = 1024
+messageSize = 2048
 IP = '192.226.1.2'
 PORT = 99
 
@@ -82,7 +82,7 @@ def clientConnection(conn, addr):
                 # message destination
                 dest = message['dest']
 
-                send(message, dest)
+                send(str(message), dest)
                 print(message)
             # if connected
             else:

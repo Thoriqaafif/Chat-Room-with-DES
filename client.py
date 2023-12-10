@@ -498,7 +498,7 @@ if __name__ == "__main__":
             # client is not in chat session
             if not connected:
                 if socks == server:
-                    data = socks.recv(2048)
+                    data = socks.recv(messageSize)
                     data = data.decode('utf-8')
                     data = eval(data)
 
