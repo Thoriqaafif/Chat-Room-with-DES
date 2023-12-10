@@ -518,7 +518,7 @@ if __name__ == "__main__":
 
                     # there is other client want to connect
                     elif (data['type'] == "new connection"):
-                        print(data['source'] + "mau buat koneksi nih... terima? (ya/tidak)")
+                        print(data['src'] + "mau buat koneksi nih... terima? (ya/tidak)")
                         answer = input()
 
                         # invalid input
