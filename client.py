@@ -556,7 +556,7 @@ if __name__ == "__main__":
                             server.send(str(keyData).encode('utf-8'))
 
                             # Koneksi berhasil
-                            connection = True
+                            connected = True
                             currConnected = clientIp
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                         # reject
@@ -604,7 +604,7 @@ if __name__ == "__main__":
                             print(f"Key yang diterima: {key}")
 
                             # koneksi berhasil
-                            connection = True
+                            connected = True
                             currConnected = data['src']
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                         # client reject
