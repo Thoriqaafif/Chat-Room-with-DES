@@ -28,7 +28,19 @@ def broadcast(message, sender):
                 remove(client['conn'])
                 removePubKeys(client['addr'])
 
+def send(message, destAddr):
+    for client in clients:
+        if(client['addr'] == destAddr):
+            try:
+                client['conn'].send(message.encode('utf-8'))
+            except:
+                remove(client['conn'])
+                removePubKeys(client['addr'])
+
 def clientConnection(conn, addr):
+    connected = False
+    connectedClient = str()
+
     # get public key
     data = conn.recv(messageSize)
     data = data.decode('utf-8')
@@ -58,19 +70,32 @@ def clientConnection(conn, addr):
 
     while True:
         try:
-            message = conn.recv(messageSize)
-            message = message.decode('utf-8')
-            ciphertext, length = message.split(',')
-            if message:
-                print(f"Sender: {addr[0]}")
-                print(f"Message: {ciphertext}")
-                print(f"Length: {length}\n")
+            # if not connected
+            if not connected:
+                message = conn.recv(messageSize)
+                message = message.decode('utf-8')
+                message = eval(message)
 
-                broadcast(f"{addr[0]},{message}", conn)
-            
+                # message destination
+                dest = message['dest']
+
+                send(message, dest)
+                print(message)
+            # if connected
             else:
-                remove(conn)
-                removePubKeys(addr[0])
+                message = conn.recv(messageSize)
+                message = message.decode('utf-8')
+                ciphertext, length = message.split(',')
+                if message:
+                    print(f"Sender: {addr[0]}")
+                    print(f"Message: {ciphertext}")
+                    print(f"Length: {length}\n")
+
+                    broadcast(f"{addr[0]},{message}", conn)
+                
+                else:
+                    remove(conn)
+                    removePubKeys(addr[0])
         except:
             continue
 
