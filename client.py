@@ -592,6 +592,7 @@ if __name__ == "__main__":
 
                             # kirim N1 dan N2
                             N2 = random.randint(0, maxNum)
+                            N2 = str(N2)
                             print(f"Mengirim  N2: {N2}")
                             N1 = rsa_encrypt(N1, tempPubKey)
                             N2 = rsa_encrypt(N2, tempPubKey)
@@ -650,6 +651,7 @@ if __name__ == "__main__":
 
                             # kirim N1 dan Id A
                             N1 = random.randint(0, maxNum)
+                            N1 = str(N1)
                             print(f"Mengirim  N1: {N1}")
                             N1 = rsa_encrypt(N1, tempPubKey)
                             print(f"Mengirim  Id: {clientIp}")
