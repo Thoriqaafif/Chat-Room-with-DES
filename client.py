@@ -22,8 +22,8 @@ connected = False
 currConnected = str()
 
 # variable for rsa
-p = 7
-q = 11
+p = 17
+q = 19
 n = p * q
 phi_n = (p-1) * (q-1)
 pubKeyList = list()
@@ -258,22 +258,71 @@ def permute(init, permMatrix):
         permutation = permutation + init[permMatrix[i]-1]
     return permutation
 
+# result for x^y mod p
+def modex(x, y, p):
+    res = 1
+
+    while(y>0):
+        if ((y & 1) != 0):
+            res = (res * x)%p
+ 
+        y = y >> 1
+        x = x * x 
+ 
+    return res % p
+
 # rsa encryption
-def rsa_encrypt(message, key):
-    pt = textToBin(message)
-    ct = ""
+def rsa_encrypt(message, pubKey):
+    print(f"Encrypt {message}:")
+    pt = message
+    ct = str()
+    ptList = []
+    ctList = []
+    blockSize = n
+    # print(f"Message = {binToDec(pt)}")
 
-    blockLength = n
-    numOfBlock = ceil(len(pt)/blockLength)
+    # for each character
+    for char in pt:
+        ptNum = ord(char)
+        ptList = [ptNum] + ptList
+        ctNum = modex(ptNum, pubKey, blockSize)
+        ctList = [ctNum] + ctList
+        ct = chr(ctNum) + ct
 
-    # for each block
-    for i in range(numOfBlock):
-        x = i*blockLength
-        currPt = pt[x:x+blockLength]
+    print("Before encryption:")
+    print(f"In decimal: {ptList}")
+    print(f"In ascii: {pt}")
+    print("After encryption:")
+    print(f"In decimal: {ctList}")
+    print(f"In ascii: {ct}")
+
+    return ct
 
 # rsa decryption
-def rsa_decrypt(message, key):
-    pass
+def rsa_decrypt(message, prKey):
+    print(f"Decrypt{message}:")
+    ct = message
+    pt = str()
+    ptList = []
+    ctList = []
+    blockSize = n
+
+    # for each character
+    for char in ct:
+        ctNum = ord(char)
+        ctList = [ctNum] + ctList
+        ptNum = modex(ctNum, prKey, blockSize)
+        ptList = [ptNum] + ptList
+        pt = chr(ptNum) + pt
+    
+    print("Before decryption:")
+    print(f"In decimal: {ctList}")
+    print(f"In ascii: {ct}")
+    print("After decryption:")
+    print(f"In decimal: {ptList}")
+    print(f"In ascii: {pt}")
+
+    return pt
 
 # des encryption
 def encrypt(plaintext, key):
@@ -453,6 +502,11 @@ def decrypt(ciphertext, key, length):
 
     return plaintext[:length]
 
+# search pubkeys
+def searchPubkeys(addr):
+    for client in clients:
+        if(client['addr'] == addr):
+            return client['pubKey']
 
 if __name__ == "__main__":
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -525,29 +579,41 @@ if __name__ == "__main__":
                             }
                             server.send(str(reply).encode('utf-8'))
                             
+                            tempPubKey = searchPubkeys(data['src'])
+
                             # menerima N1 dan IdA
-                            N1 = server.recv(messageSize).decode('utf-8')
-                            N1 = eval(N1)
-                            print(f"N1 yang diterima: {N1['message']}")
+                            msg = server.recv(messageSize).decode('utf-8')
+                            msg = eval(N1)
+                            N1, IdA = msg['message'].split(',')
+                            N1 = rsa_decrypt(N1, prKey)
+                            print(f"N1 yang diterima: {N1}")
+                            IdA = rsa_decrypt(IdA, prKey)
+                            print(f"Id yang diterima: {IdA}")
 
                             # kirim N1 dan N2
                             N2 = random.randint(0, maxNum)
                             print(f"Mengirim  N2: {N2}")
+                            N1 = rsa_encrypt(N1, tempPubKey)
+                            N2 = rsa_encrypt(N2, tempPubKey)
+                            msg = f"{N1},{N2}"
                             n1n2 = {
                                 'dest': data['src'],
                                 'src': clientIp,
-                                'message': N2
+                                'message': msg
                             }
                             server.send(str(n1n2).encode('utf-8'))
 
                             # menerima N2
                             N2 = server.recv(messageSize).decode('utf-8')
                             N2 = eval(N2)
-                            print(f"N2 yang diterima: {N2['message']}")
+                            N2 = N2['message']
+                            N2 = rsa_decrypt(N2, prKey)
+                            print(f"N2 yang diterima: {N2}")
 
                             # kirim session key
                             key = generateSessionKey()
                             print(f"Mengirim  key: {key}")
+                            key = rsa_encrypt(key, tempPubKey)
                             keyData = {
                                 'dest': data['src'],
                                 'src': clientIp,
@@ -564,7 +630,7 @@ if __name__ == "__main__":
                             }
                             server.send(str(connectionMessage).encode('utf-8'))
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
-                            print("Sesi chat telah dimulai\n")
+                            print(f"Sesi chat telah dimulai dengan session key = {key} (ketik 'exit untuk keluar sesi')\n")
                         # reject
                         else:
                             data={
@@ -579,27 +645,39 @@ if __name__ == "__main__":
                     elif (data['type'] == "reply connection"):
                         # client accept
                         if(data["message"] == "accept"):
+                            # mencari public key client
+                            tempPubKey = searchPubkeys(data['src'])
+
                             # kirim N1 dan Id A
                             N1 = random.randint(0, maxNum)
                             print(f"Mengirim  N1: {N1}")
+                            N1 = rsa_encrypt(N1, tempPubKey)
+                            print(f"Mengirim  Id: {clientIp}")
+                            IdA = rsa_encrypt(clientIp, tempPubKey)
+                            msg = f"{N1},{IdA}"
                             n1Id = {
                                 'dest': data['src'],
                                 'src': clientIp,
-                                'message': N1
+                                'message': msg
                             }
                             server.send(str(n1Id).encode('utf-8'))
 
                             # menerima N1, N2
-                            N2 = server.recv(messageSize).decode('utf-8')
-                            N2 = eval(N2)
-                            print(f"N2 yang diterima: {N2['message']}")
+                            msg = server.recv(messageSize).decode('utf-8')
+                            msg = eval(msg)
+                            N1, N2 = msg['message'].split(',')
+                            N1 = rsa_decrypt(N1, prKey)
+                            print(f"N1 yang diterima: {N1}")
+                            N2 = rsa_decrypt(N2, prKey)
+                            print(f"N2 yang diterima: {N2}")
 
                             # kirim N2
-                            print(f"Mengirim  N2: {N2['message']}")
+                            print(f"Mengirim  N2: {N2}")
+                            N2 = rsa_encrypt(N2, tempPubKey)
                             n2 = {
                                 'dest': data['src'],
                                 'src': clientIp,
-                                'message': N2['message']
+                                'message': N2
                             }
                             server.send(str(n2).encode('utf-8'))
 
@@ -607,6 +685,7 @@ if __name__ == "__main__":
                             key = server.recv(messageSize).decode('utf-8')
                             key = eval(key)
                             key = key['message']
+                            key = rsa_decrypt(key, prKey)
                             print(f"Key yang diterima: {key}")
 
                             # koneksi berhasil
@@ -618,7 +697,7 @@ if __name__ == "__main__":
                             }
                             server.send(str(connectionMessage).encode('utf-8'))
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
-                            print("Sesi chat telah dimulai\n")
+                            print(f"Sesi chat telah dimulai dengan session key = {key} (ketik 'exit untuk keluar sesi')\n")
                         # client reject
                         elif(data["message"] == "reject"):
                             print(f"{data['src']} menolak koneksi")
@@ -657,6 +736,9 @@ if __name__ == "__main__":
                     sys.stdout.flush()
                 else:
                     plaintext = input()
+                    # if user exit chat session
+                    if(plaintext == 'exit'):
+                        pass
                     ciphertext = encrypt(plaintext, key)
 
                     message = f"{ciphertext},{len(plaintext)}"
