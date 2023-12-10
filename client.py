@@ -8,10 +8,11 @@ import random
 
 IP = '192.226.1.2'
 Port = 99
-key = "AABB09182736CCDD"
+key = str()
 username = str()
 clientIp = str()
 messageSize = 2048
+maxNum = 999999999
 
 # list of other client's and its public keys
 clients = []
@@ -145,8 +146,6 @@ finalPerm = [40, 8, 48, 16, 56, 24, 64, 32,
              33, 1, 41, 9, 49, 17, 57, 25]
 
 # convert hex to binary
-
-
 def hexToBin(hex):
     mp = {'0': "0000",
           '1': "0001",
@@ -170,8 +169,6 @@ def hexToBin(hex):
     return bin
 
 # convert binary to decimal
-
-
 def binToDec(bin):
     decimal = 0
     for bit in bin:
@@ -181,8 +178,6 @@ def binToDec(bin):
     return decimal
 
 # convert decimal to binary
-
-
 def decToBin(dec, bit):
     num = dec
     bin = str()
@@ -197,8 +192,6 @@ def decToBin(dec, bit):
     return bin
 
 # convert binary to text in ASCII format
-
-
 def binToText(bin):
     text = str()
     for i in range(len(bin)//8):
@@ -207,8 +200,6 @@ def binToText(bin):
     return text
 
 # convert text to binary in ASCII format
-
-
 def textToBin(text):
     bin = str()
     for char in text:
@@ -217,8 +208,6 @@ def textToBin(text):
     return bin
 
 # convert binary to hex
-
-
 def binToHex(bin):
     mp = {"0000": '0',
           "0001": '1',
@@ -530,7 +519,6 @@ if __name__ == "__main__":
                         if(answer == "ya"):
                             connection = True
                             currConnected = data['src']
-                            print(f"Berhasil membuat koneksi dengan {currConnected}")
                             data={
                                 "type": "reply connection",
                                 "dest": currConnected,
@@ -538,6 +526,38 @@ if __name__ == "__main__":
                                 "message": "accept"
                             }
                             server.send(str(data).encode('utf-8'))
+                            
+                            # menerima N1 dan IdA
+                            N1 = server.recv(messageSize)
+                            N1 = eval(N1)
+                            print(f"N1 yang diterima: {N1['message']}")
+
+                            # kirim N1 dan N2
+                            N2 = random.randint(0, maxNum)
+                            print(f"Mengirim  N2: {N2}")
+                            n1n2 = {
+                                'dest': data['src'],
+                                'src': clientIp,
+                                'message': N2
+                            }
+                            server.send(str(n1n2).encode('utf-8'))
+
+                            # menerima N2
+                            N2 = server.recv(messageSize)
+                            N2 = eval(N1)
+                            print(f"N2 yang diterima: {N2['message']}")
+
+                            # kirim session key
+                            key = generateSessionKey()
+                            print(f"Mengirim  key: {key}")
+                            keyData = {
+                                'dest': data['src'],
+                                'src': clientIp,
+                                'message': key
+                            }
+
+                            # Koneksi berhasil
+                            print(f"Berhasil membuat koneksi dengan {currConnected}")
                         # reject
                         else:
                             data={
@@ -554,10 +574,41 @@ if __name__ == "__main__":
                         if(data["message"] == "accept"):
                             connection = True
                             currConnected = data['src']
+
+                            # kirim N1 dan Id A
+                            N1 = random.randint(0, maxNum)
+                            print(f"Mengirim  N1: {N1}")
+                            n1Id = {
+                                'dest': data['src'],
+                                'src': clientIp,
+                                'message': N1
+                            }
+                            server.send(str(n1Id).encode('utf-8'))
+
+                            # menerima N1, N2
+                            N2 = server.recv(messageSize)
+                            N2 = eval(N2)
+                            print(f"N2 yang diterima: {N2['message']}")
+
+                            # kirim N2
+                            print(f"Mengirim  N2: {N2}")
+                            n2 = {
+                                'dest': data['src'],
+                                'src': clientIp,
+                                'message': N2
+                            }
+                            server.send(str(n2).encode('utf-8'))
+
+                            # menerima N1 dan session Key
+                            key = server.recv(messageSize)
+                            key = eval(key)
+                            print(f"Key yang diterima: {key['message']}")
+
+                            # koneksi berhasil
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                         # client reject
                         elif(data["message"] == "reject"):
-                            pass
+                            print(f"{data['src']} menolak koneksi")
 
                 # try to connect to other client
                 else:
@@ -575,6 +626,8 @@ if __name__ == "__main__":
                         'dest': clients[selectedClient-1]['addr']
                     }
                     server.send(str(data).encode('utf-8'))
+
+                    print('Sedang menunggu jawaban ...')
 
             # client is in chat session
             else:
