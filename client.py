@@ -242,7 +242,7 @@ def generateSessionKey():
     max = (1<<64)-1
     dec = random.randint(min, max)
 
-    return binToHex(decToBin(dec))
+    return binToHex(decToBin(dec, 64))
 
 # shift digit left
 def shiftLeft(num, shift, bits):
