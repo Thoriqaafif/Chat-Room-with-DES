@@ -558,6 +558,7 @@ if __name__ == "__main__":
                             # Koneksi berhasil
                             connected = True
                             currConnected = clientIp
+                            server.send(currConnected.encode('utf-8'))
                             print(f"Berhasil membuat koneksi dengan {currConnected}")
                             print("Sesi chat telah dimulai\n")
                         # reject
@@ -650,7 +651,7 @@ if __name__ == "__main__":
                     plaintext = input()
                     ciphertext = encrypt(plaintext, key)
 
-                    message = f"{ciphertext},{len(plaintext),currConnected}"
+                    message = f"{ciphertext},{len(plaintext)}"
                     server.send(message.encode('utf-8'))
                     print(f"Sender: You")
                     print(f"message: { plaintext }")

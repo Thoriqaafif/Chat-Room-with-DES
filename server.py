@@ -96,6 +96,7 @@ def clientConnection(conn, addr):
                     removePubKeys(addr[0])
             # if connected
             else:
+                print('test')
                 message = conn.recv(messageSize)
                 message = message.decode('utf-8')
                 ciphertext, length = message.split(',')
