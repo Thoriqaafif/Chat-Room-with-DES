@@ -559,7 +559,7 @@ if __name__ == "__main__":
                             connected = True
                             currConnected = data['src']
                             connectionMessage = {
-                                'type': 'None',
+                                'dest': None,
                                 'addr': currConnected
                             }
                             server.send(str(connectionMessage).encode('utf-8'))
