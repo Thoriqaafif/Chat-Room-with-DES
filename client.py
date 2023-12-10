@@ -544,7 +544,7 @@ if __name__ == "__main__":
 
                             # menerima N2
                             N2 = server.recv(messageSize)
-                            N2 = eval(N1)
+                            N2 = eval(N2)
                             print(f"N2 yang diterima: {N2['message']}")
 
                             # kirim session key
