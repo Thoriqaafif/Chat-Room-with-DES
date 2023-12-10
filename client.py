@@ -584,7 +584,7 @@ if __name__ == "__main__":
 
                             # menerima N1 dan IdA
                             msg = server.recv(messageSize).decode('utf-8')
-                            msg = eval(N1)
+                            msg = eval(msg)
                             N1, IdA = msg['message'].split(',')
                             N1 = rsa_decrypt(N1, prKey)
                             print(f"N1 yang diterima: {N1}")
