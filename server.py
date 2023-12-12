@@ -101,15 +101,20 @@ def clientConnection(conn, addr):
                 message = message.decode('utf-8')
                 ciphertext, length = message.split(',')
                 if message:
-                    print(f"Sender: {addr[0]}")
-                    print(f"Message: {ciphertext}")
-                    print(f"Length: {length}\n")
-
-                    send(f"{addr[0]},{message}", currConnected)
-                    if(ciphertext == "exit" or ciphertext == 'unconnect'):
+                    if(ciphertext == "exit"):
+                        send(f"{addr[0]},{message}", currConnected)
                         connected = False
                         currConnected = ""
-                        
+                    elif(ciphertext == 'unconnect'):
+                        connected = False
+                        currConnected = ""
+                    else:
+                        print(f"Sender: {addr[0]}")
+                        print(f"Message: {ciphertext}")
+                        print(f"Length: {length}\n")
+
+                        send(f"{addr[0]},{message}", currConnected)
+                
                 else:
                     remove(conn)
                     removePubKeys(addr[0])
