@@ -748,6 +748,7 @@ if __name__ == "__main__":
                 if socks == server:
                     message = socks.recv(2048)
                     message = message.decode('utf-8')
+                    print(message)
                     addr, ciphertext, length = message.split(',')
                     length = int(length)
                     if (ciphertext == "exit"):
@@ -775,7 +776,8 @@ if __name__ == "__main__":
                     # if user exit chat session
                     if(plaintext == 'exit'):
                         # give exit message to server
-                        server.send(f"{plaintext},{len(plaintext)}".encode('utf-8'))
+                        message = f"{plaintext},{len(plaintext)}"
+                        server.send(message.encode('utf-8'))
                         print(f"Mengakhiri sesi chat dengan {currConnected}")
                         connected = False
                         currConnected = ""
