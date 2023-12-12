@@ -752,7 +752,7 @@ if __name__ == "__main__":
                     length = int(length)
                     if (ciphertext == "exit"):
                         print(f"{currConnected} mengakhiri sesi chat")
-                        server.send(f"unconnect,9")
+                        server.send(f"unconnect,9".encode('utf-8'))
                         connected = False
                         currConnected = ""
                         print(f"Daftar client:")
