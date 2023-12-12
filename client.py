@@ -751,7 +751,7 @@ if __name__ == "__main__":
                     addr, ciphertext, length = message.split(',')
                     length = int(length)
                     if (ciphertext == "exit"):
-                        print(f"{currConnected} mengakhiri sesi chat")
+                        print(f"{currConnected} mengakhiri sesi chat\n")
                         server.send(f"unconnect,9".encode('utf-8'))
                         connected = False
                         currConnected = ""
@@ -778,7 +778,7 @@ if __name__ == "__main__":
                         # give exit message to server
                         message = f"{plaintext},{len(plaintext)}"
                         server.send(message.encode('utf-8'))
-                        print(f"Mengakhiri sesi chat dengan {currConnected}")
+                        print(f"Mengakhiri sesi chat dengan {currConnected}\n")
                         connected = False
                         currConnected = ""
                         print(f"Daftar client:")
