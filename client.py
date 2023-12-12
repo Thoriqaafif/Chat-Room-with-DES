@@ -748,7 +748,6 @@ if __name__ == "__main__":
                 if socks == server:
                     message = socks.recv(2048)
                     message = message.decode('utf-8')
-                    print(message)
                     addr, ciphertext, length = message.split(',')
                     length = int(length)
                     if (ciphertext == "exit"):
