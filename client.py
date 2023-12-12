@@ -765,11 +765,12 @@ if __name__ == "__main__":
                                 print(f"{i+1}. {clients[i]['addr']}")
                             print("Mau membuat koneksi ke siapa?\n")
 
-                    plaintext = decrypt(ciphertext, key, length)
-                    print(f"Sender: {addr}")
-                    print(f"Cipher Text: { ciphertext }")
-                    print(f"message: { plaintext }\n")
-                    sys.stdout.flush()
+                    else:
+                        plaintext = decrypt(ciphertext, key, length)
+                        print(f"Sender: {addr}")
+                        print(f"Cipher Text: { ciphertext }")
+                        print(f"message: { plaintext }\n")
+                        sys.stdout.flush()
                 else:
                     plaintext = input()
                     # if user exit chat session
