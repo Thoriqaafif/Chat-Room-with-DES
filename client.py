@@ -300,7 +300,7 @@ def rsa_encrypt(message, pubKey):
 
 # rsa decryption
 def rsa_decrypt(message, prKey):
-    print(f"Decrypt{message}:")
+    print(f"Decrypt:")
     ct = message
     pt = str()
     ptList = []
