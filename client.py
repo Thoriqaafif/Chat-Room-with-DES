@@ -750,6 +750,20 @@ if __name__ == "__main__":
                     message = message.decode('utf-8')
                     addr, ciphertext, length = message.split(',')
                     length = int(length)
+                    if (ciphertext == "exit"):
+                        print(f"{currConnected} mengakhiri sesi chat")
+                        server.send(f"unconnect,9")
+                        connected = False
+                        currConnected = ""
+                        print(f"Daftar client:")
+                        # client belum ada
+                        if(len(clients) == 0):
+                            print("Belum ada client yang terkoneksi")
+                        # client ada
+                        else:
+                            for i in range(len(clients)):
+                                print(f"{i+1}. {clients[i]['addr']}")
+                            print("Mau membuat koneksi ke siapa?\n")
 
                     plaintext = decrypt(ciphertext, key, length)
                     print(f"Sender: {addr}")
@@ -760,14 +774,29 @@ if __name__ == "__main__":
                     plaintext = input()
                     # if user exit chat session
                     if(plaintext == 'exit'):
-                        pass
-                    ciphertext = encrypt(plaintext, key)
+                        # give exit message to server
+                        server.send(f"{plaintext},{len(plaintext)}".encode('utf-8'))
+                        print(f"Mengakhiri sesi chat dengan {currConnected}")
+                        connected = False
+                        currConnected = ""
+                        print(f"Daftar client:")
+                        # client belum ada
+                        if(len(clients) == 0):
+                            print("Belum ada client yang terkoneksi")
+                        # client ada
+                        else:
+                            for i in range(len(clients)):
+                                print(f"{i+1}. {clients[i]['addr']}")
+                            print("Mau membuat koneksi ke siapa?\n")
+                        
+                    else:
+                        ciphertext = encrypt(plaintext, key)
 
-                    message = f"{ciphertext},{len(plaintext)}"
-                    server.send(message.encode('utf-8'))
-                    print(f"Sender: You")
-                    print(f"message: { plaintext }")
-                    print(f"Cipher Text: { ciphertext }\n")
-                    sys.stdout.flush()
+                        message = f"{ciphertext},{len(plaintext)}"
+                        server.send(message.encode('utf-8'))
+                        print(f"Sender: You")
+                        print(f"message: { plaintext }")
+                        print(f"Cipher Text: { ciphertext }\n")
+                        sys.stdout.flush()
 
     server.close()
